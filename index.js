@@ -175,6 +175,7 @@ raf()
 //////////////////////////////////////////////////
 
 let gui = new dat.GUI()
+gui.enableMidi()
 gui.add(diffuse_decay.uniforms.decay, "value", 0.01, .99, .01).name("decay")
 gui.add(update_agents.uniforms.sa, "value", 1, 90, .1).name("sa")
 gui.add(update_agents.uniforms.ra, "value", 1, 90, .1).name("ra")

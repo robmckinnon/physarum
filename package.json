@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "dat.gui": "0.7.5",
+    "dat.gui": "github:gregsadetsky/dat.gui.midi#master",
     "file-loader": "^3.0.1",
     "raw-loader": "^1.0.0",
     "three": "0.102.1",
