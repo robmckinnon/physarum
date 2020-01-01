@@ -32,7 +32,7 @@ const scene = new Scene();
 const camera = new OrthographicCamera(-w / 2, w / 2, h / 2, -h / 2, 0.1, 100);
 camera.position.z = 1
 
-// 1 init buffers 
+// 1 init buffers
 //////////////////////////////////////
 
 let size = 512 // particles amount = ( size ^ 2 )
@@ -45,7 +45,7 @@ let ptexdata = new Float32Array(count * 4)
 let id = 0, u,v;
 for (let i = 0; i < count; i++) {
 
-    //point cloud vertex 
+    //point cloud vertex
     id = i * 3
     pos[id++] = pos[id++] = pos[id++] = 0;
 
@@ -62,18 +62,18 @@ for (let i = 0; i < count; i++) {
     ptexdata[id++] = Math.random() // normalized pos y
     ptexdata[id++] = Math.random() // normalized angle
     ptexdata[id++] = 1
-    
+
 
 }
 
-// 2 data & trails 
+// 2 data & trails
 //////////////////////////////////////
 
-//performs the diffusion and decay 
+//performs the diffusion and decay
 let diffuse_decay = new ShaderMaterial({
     uniforms: {
         points: { value: null },
-        decay: {value: .9 }        
+        decay: {value: .9 }
     },
     vertexShader: require('./src/glsl/quad_vs.glsl'),
     fragmentShader: require('./src/glsl/diffuse_decay_fs.glsl')
@@ -81,10 +81,10 @@ let diffuse_decay = new ShaderMaterial({
 let trails = new PingpongRenderTarget(w, h, diffuse_decay)
 
 
-// 3 agents 
+// 3 agents
 //////////////////////////////////////
 
-//moves agents around 
+//moves agents around
 let update_agents = new ShaderMaterial({
     uniforms: {
         data: { value: null },
@@ -102,7 +102,7 @@ let agents = new PingpongRenderTarget(size, size, update_agents, ptexdata)
 // 4 point cloud
 //////////////////////////////////////
 
-//renders the updated agents as red dots 
+//renders the updated agents as red dots
 let render_agents = new ShaderMaterial({
     vertexShader: require('./src/glsl/render_agents_vs.glsl'),
     fragmentShader: require('./src/glsl/render_agents_fs.glsl')
@@ -128,34 +128,34 @@ postprocess_mesh.scale.set(w, h, 1)
 scene.add(postprocess_mesh)
 
 
-// 6 interactive controls 
+// 6 interactive controls
 //////////////////////////////////////
 let controls = new Controls( renderer, agents )
 controls.count = ~~(size * size * .05)
 
 
-// animation loop 
+// animation loop
 //////////////////////////////////////
 
 function raf(){
-    
+
     requestAnimationFrame(raf)
 
     time = (Date.now() - start) * 0.001
-    
+
     trails.material.uniforms.points.value = render.texture
     trails.render( renderer, time )
-    
+
     agents.material.uniforms.data.value = trails.texture
     agents.render(renderer, time)
-    
+
     render.render( renderer, time )
-    
+
     postprocess_mesh.material.uniforms.data.value = trails.texture
     renderer.setSize(w,h)
     renderer.clear()
     renderer.render(scene, camera)
-    
+
 }
 
 //////////////////////////////////////////////////
@@ -184,4 +184,3 @@ gui.add(update_agents.uniforms.ss, "value", 0.1, 10, .1).name("ss")
 gui.add(controls, "random")
 gui.add(controls, "radius",.001,.25)
 gui.add(controls, "count", 1,size*size, 1)
-

@@ -10,7 +10,7 @@ export default class Controls {
         this.renderer = renderer
         this.agents = agents
         this.size = new Vector2()
-        
+
         this.radius = .025;
         this.count = 50;
 
@@ -28,12 +28,12 @@ export default class Controls {
     }
 
     onDoubleClick(e) {
-        
+
         let c = this.count
         this.count = -1
         this.addParticles(e )
         this.count = c
-        
+
     }
 
     onUp(e) {
@@ -47,12 +47,10 @@ export default class Controls {
     }
 
     addParticles(e) {
-
         let count = this.count
         if(this.count == -1 ){
             count = this.agents.texture.image.data.length / 4
         }
-
         this.renderer.getSize(this.size)
         let w = this.size.width
         let h = this.size.height
@@ -65,7 +63,6 @@ export default class Controls {
         let ratio = w / h,
             a, r, id;
         for (let i = pid; i < pid + count; i++) {
-
             id = (i % max) * 4
             a = Math.random() * Math.PI * 2
             r = ( Math.random() * radius )
